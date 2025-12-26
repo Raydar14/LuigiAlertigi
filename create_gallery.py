@@ -785,19 +785,42 @@ html_content += f"""
         }}
         
         function luigiLogic() {{
-             const quote = luigiQuotes[Math.floor(Math.random() * luigiQuotes.length)];
-             // Split long quotes randomly between top and bottom or just bottom
-             if (quote.length > 20 && Math.random() > 0.5) {{
-                 const mid = Math.floor(quote.length / 2);
-                 const splitIdx = quote.lastIndexOf(' ', mid);
-                 document.getElementById('top-text').value = quote.substring(0, splitIdx);
-                 document.getElementById('middle-text').value = "";
-                 document.getElementById('bottom-text').value = quote.substring(splitIdx + 1);
-             }} else {{
-                 document.getElementById('top-text').value = "";
-                 document.getElementById('middle-text').value = "";
-                 document.getElementById('bottom-text').value = quote;
+             let quote = luigiQuotes[Math.floor(Math.random() * luigiQuotes.length)];
+             
+             // Remove trailing punctuation first
+             quote = quote.replace(/[.,;?!]+$/, '');
+
+             // Split by punctuation (comma, period, etc in middle)
+             // This consumes the punctuation so it doesn't appear in text
+             let parts = quote.split(/[.,;?!]+/).map(p => p.trim()).filter(p => p.length > 0);
+             
+             // Fallback: If 1 part is too long (>24 chars), split by space
+             if (parts.length === 1 && parts[0].length > 24) {{
+                 const mid = Math.floor(parts[0].length / 2);
+                 const splitIdx = parts[0].lastIndexOf(' ', mid);
+                 if (splitIdx !== -1) {{
+                    parts = [parts[0].substring(0, splitIdx), parts[0].substring(splitIdx + 1)];
+                 }}
              }}
+
+             // Assign to fields
+             let t = "", m = "", b = "";
+             
+             if (parts.length === 1) {{
+                 b = parts[0];
+             }} else if (parts.length === 2) {{
+                 t = parts[0];
+                 b = parts[1];
+             }} else {{
+                 t = parts[0];
+                 m = parts[1];
+                 b = parts.slice(2).join(" ");
+             }}
+             
+             document.getElementById('top-text').value = t;
+             document.getElementById('middle-text').value = m;
+             document.getElementById('bottom-text').value = b;
+             
              drawMeme();
         }}
         
