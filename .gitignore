@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp/Debug files
+debug_page_*.html
+inspect_out.txt
+report.txt
+analysis_output.txt
