@@ -4515,10 +4515,10 @@
         function downloadMeme() {
             canvas.toBlob(function(blob) {
                 if (window.saveAs) {
-                    saveAs(blob, "luigi_meme.jpg");
+                    saveAs(blob, "Luigi_Logic_Meme.jpg");
                 } else {
                     const link = document.createElement('a');
-                    link.download = 'luigi_meme.jpg';
+                    link.download = 'Luigi_Logic_Meme.jpg';
                     link.href = URL.createObjectURL(blob);
                     document.body.appendChild(link);
                     link.click();
@@ -4529,7 +4529,7 @@
         
         async function shareMeme() {
             canvas.toBlob(async function(blob) {
-                const file = new File([blob], "luigi_meme.jpg", { type: "image/jpeg" });
+                const file = new File([blob], "Luigi_Logic_Meme.jpg", { type: "image/jpeg" });
                 if (navigator.share && navigator.canShare({ files: [file] })) {
                     try {
                         await navigator.share({
